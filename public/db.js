@@ -1,8 +1,6 @@
-const { get } = require("mongoose");
-
 let db;
 
-const request = indexedDB.open("workouts",1);
+const request = indexedDB.open("workouts", 1);
 
 request.onupgradeneeded = function(event) {
     const db = event.target.result;
@@ -20,6 +18,19 @@ request.onsuccess = event => {
 request.onerror = event => {
     console.log("Unable to Connect to DB :" + event.target.errorCode);
 };
+
+function saveRecord(record) {
+    // create a transaction on the pending db with readwrite access
+    const transaction = db.transaction(["pending"], "readwrite");
+  
+    // access your pending object store
+    const store = transaction.objectStore("pending");
+  
+    // add record to your store with add method.
+    store.add(record);
+}
+
+
 
 function checkDatabase() {
     const transaction = db.transaction(["pending"], "readwrite");
