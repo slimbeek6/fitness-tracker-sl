@@ -22,6 +22,7 @@ function generatePalette() {
 }
 
 function populateChart(data) {
+  console.log(data);
   let durations = data.map(({ totalDuration }) => totalDuration);
   let pounds = calculateTotalWeight(data);
   let workouts = workoutNames(data);
@@ -199,6 +200,7 @@ function workoutNames(data) {
       workouts.push(exercise.name);
     });
   });
+  console.log(workouts);
 
   // return de-duplicated array with JavaScript `Set` object
   return [...new Set(workouts)];

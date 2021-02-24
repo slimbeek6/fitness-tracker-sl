@@ -23,7 +23,7 @@ router.post("/api/workouts/bulk", ({ body }, res) => {
 
 router.get("/api/workouts", (req, res) => {
   Workout.find({})
-    .sort({ date: -1 })
+    .sort({ day: -1 })
     .then(dbWorkout => {
       res.json(dbWorkout);
     })
@@ -33,9 +33,10 @@ router.get("/api/workouts", (req, res) => {
 });
 
 router.get("/api/workouts/range", (req, res) => {
-    Workout.findAll({})
-      .sort({ date: -1 })
+    Workout.find({day: {$gte: new Date((new Date().getTime() - (7 * 24 * 60 * 60 * 1000)))}})
+      .sort({ day: -1 })
       .then(dbWorkout => {
+        console.log(dbWorkout);
         res.json(dbWorkout);
       })
       .catch(err => {
