@@ -23,10 +23,14 @@ function generatePalette() {
 
 function populateChart(data) {
   console.log(data);
-  let durations = data.map(({ totalDuration }) => totalDuration);
+  let workoutDurations = data.map(({ totalDuration }) => totalDuration);
   let pounds = calculateTotalWeight(data);
   let workouts = workoutNames(data);
+  let workNames = workouts.map(({ name }) => name);
+  let exerciseDurations = workouts.map(({ duration }) => duration);
   const colors = generatePalette();
+  console.log(data);
+  console.log(workouts);
 
   let line = document.querySelector('#canvas').getContext('2d');
   let bar = document.querySelector('#canvas2').getContext('2d');
@@ -57,7 +61,7 @@ function populateChart(data) {
           label: 'Workout Duration In Minutes',
           backgroundColor: 'red',
           borderColor: 'red',
-          data: durations,
+          data: workoutDurations,
           fill: false,
         },
       ],
@@ -136,12 +140,12 @@ function populateChart(data) {
   let pieChart = new Chart(pie, {
     type: 'pie',
     data: {
-      labels: workouts,
+      labels: workNames,
       datasets: [
         {
           label: 'Exercises Performed',
           backgroundColor: colors,
-          data: durations,
+          data: exerciseDurations,
         },
       ],
     },
@@ -156,7 +160,7 @@ function populateChart(data) {
   let donutChart = new Chart(pie2, {
     type: 'doughnut',
     data: {
-      labels: workouts,
+      labels: workNames,
       datasets: [
         {
           label: 'Exercises Performed',
@@ -197,7 +201,9 @@ function workoutNames(data) {
 
   data.forEach((workout) => {
     workout.exercises.forEach((exercise) => {
-      workouts.push(exercise.name);
+      let name = exercise.name;
+      let duration = exercise.duration;
+      workouts.push({"name": name, "duration": duration});
     });
   });
   console.log(workouts);
